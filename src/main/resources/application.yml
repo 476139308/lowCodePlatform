@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    username: develop
+    password: 123456
+    url: jdbc:mysql://60.205.177.176:3306/platform?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
