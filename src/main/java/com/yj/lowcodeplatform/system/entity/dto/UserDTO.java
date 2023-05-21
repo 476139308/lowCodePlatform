@@ -1,14 +1,21 @@
 package com.yj.lowcodeplatform.system.entity.dto;
 
 
+import com.yj.lowcodeplatform.common.entity.BaseEntity;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * @author YuJin
+ * @version 1.0.0
+ * @apiNote
+ * @since 2023/5/21 16:01
+ */
 @Data
-public class UserDTO implements Serializable {
+public class UserDTO extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -69,11 +76,5 @@ public class UserDTO implements Serializable {
      * 0:男，1：女
      */
     private Integer gender;
-
-
-    /**
-     * 是否被删除
-     */
-    private Integer deleted;
 
 }
