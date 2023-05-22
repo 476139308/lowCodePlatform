@@ -1,10 +1,11 @@
 package com.yj.lowcodeplatform.common.utils;
 
+import com.yj.lowcodeplatform.system.entity.constants.GlobalConstant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class JwtUtils {
     public static final String APP_SECRET = "ukc8BDbRigUDaY6pZFfWus2jZWLPHO"; //秘钥
 
     //生成token字符串的方法
-    public static String getJwtToken(String id, String username) {
+    public static String generateToken(String id, String username) {
         String JwtToken = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
@@ -38,8 +39,8 @@ public class JwtUtils {
         return JwtToken;
     }
 
-    public static String getJwtToken(Long id, String username) {
-        return getJwtToken(id.toString(), username);
+    public static String generateToken(Long id, String username) {
+        return generateToken(id.toString(), username);
     }
 
     /**
@@ -69,7 +70,7 @@ public class JwtUtils {
      */
     public static boolean checkToken(HttpServletRequest request) {
         try {
-            String jwtToken = request.getHeader("token");
+            String jwtToken = request.getHeader(GlobalConstant.LOGIN_AUTHENTICATE_TOKEN);
             if (StringUtils.isEmpty(jwtToken)) {
                 return false;
             }
@@ -82,18 +83,65 @@ public class JwtUtils {
     }
 
     /**
+     * 判断token是否过期了
+     *
+     * @param token 用户携带的token
+     * @return
+     */
+    public static boolean isExpire(String token) {
+        try {
+            if (StringUtils.isEmpty(token)) {
+                return false;
+            }
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token);
+            Date expiration = claimsJws.getBody().getExpiration();
+            return expiration.before(new Date());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
      * 根据token字符串获取会员id
      *
      * @param request
      * @return
      */
     public static String getMemberIdByJwtToken(HttpServletRequest request) {
-        String jwtToken = request.getHeader("token");
-        if (StringUtils.isEmpty(jwtToken)) {
+        String jwtToken = request.getHeader(GlobalConstant.LOGIN_AUTHENTICATE_TOKEN);
+        return getMemberIdByJwtToken(jwtToken);
+    }
+
+
+    public static String getPropertyByToken(String token, String propertyName) {
+        if (StringUtils.isEmpty(token)) {
             return "";
         }
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token);
         Claims claims = claimsJws.getBody();
-        return (String) claims.get("id");
+        return (String) claims.get(propertyName);
     }
+
+    /**
+     * 根据token字符串获取会员id
+     *
+     * @param token
+     * @return
+     */
+    public static String getMemberIdByJwtToken(String token) {
+        return getPropertyByToken(token, "id");
+    }
+
+
+    public static String getUsernameByJwtToken(String token) {
+        return getPropertyByToken(token, "username");
+    }
+
+
+    public static String getPasswordByToken(String token) {
+        return getPropertyByToken(token, "password");
+    }
+
 }

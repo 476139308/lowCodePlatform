@@ -78,6 +78,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserDao, User> implements U
         return null;
     }
 
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     private UserDTO toDTO(User original) {
         UserDTO bean = new UserDTO();
         BeanUtils.copyProperties(original, bean);

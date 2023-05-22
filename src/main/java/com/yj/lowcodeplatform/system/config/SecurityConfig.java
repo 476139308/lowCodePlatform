@@ -1,5 +1,6 @@
 package com.yj.lowcodeplatform.system.config;
 
+import com.yj.lowcodeplatform.system.filter.JwtAuthenticateFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.annotation.Resource;
 
 /**
  * @author YuJin
@@ -22,12 +26,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Resource
+    private JwtAuthenticateFilter jwtAuthenticateFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authorizeHttpRequests((authr) -> {
                     authr.anyRequest().permitAll();
                 }).httpBasic(Customizer.withDefaults());
+        httpSecurity.addFilterBefore(jwtAuthenticateFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 

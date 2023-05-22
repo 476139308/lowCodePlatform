@@ -28,4 +28,7 @@ public interface UserService extends BaseService<User> {
     Page<UserDTO> query(UserQueryVO vO);
 
     UserVO login(UserDTO userDTO);
+
+    User findByUsername(String username);
+
 }

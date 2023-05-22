@@ -1,11 +1,12 @@
 package com.yj.lowcodeplatform.system.controller;
 
-import com.yj.lowcodeplatform.common.entity.Result;
-import com.yj.lowcodeplatform.common.utils.JwtUtils;
+import com.yj.lowcodeplatform.common.entity.ResultResponse;
 import com.yj.lowcodeplatform.system.entity.dto.UserDTO;
 import com.yj.lowcodeplatform.system.entity.vo.UserQueryVO;
 import com.yj.lowcodeplatform.system.entity.vo.UserUpdateVO;
 import com.yj.lowcodeplatform.system.entity.vo.UserVO;
+import com.yj.lowcodeplatform.system.exception.BusinessException;
+import com.yj.lowcodeplatform.system.exception.ResultCodeInfoEnum;
 import com.yj.lowcodeplatform.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,10 +57,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result<String> login(@RequestBody UserDTO userDTO) {
-        UserVO userVo = userService.login(userDTO);
-        userDTO.setId(4L);
-        String jwtToken = JwtUtils.getJwtToken(userDTO.getId().toString(), userDTO.getUsername());
-        return Result.success(jwtToken);
+    public ResultResponse<String> login(@RequestBody UserDTO userDTO) {
+        throw new BusinessException(ResultCodeInfoEnum.INTERNAL_SERVER_ERROR);
+//        UserVO userVo = userService.login(userDTO);
+//        userDTO.setId(4L);
+//        String jwtToken = JwtUtils.generateToken(userDTO.getId().toString(), userDTO.getUsername());
+//        return ResultResponse.success(jwtToken);
     }
 }
