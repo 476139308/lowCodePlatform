@@ -3,9 +3,9 @@ package com.yj.lowcodeplatform.system.exception;
 import com.yj.lowcodeplatform.common.entity.ResultResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -16,14 +16,14 @@ import java.util.Arrays;
  * @apiNote this class is a global exception handler, deal with exception for this system when is in runtime
  * @since 2023/5/22 12:54
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(GenericException.class)
     @ResponseBody
-    public ResultResponse handlerBusinessException(HttpServletRequest request, BusinessException e) {
-        logger.error("{}发生了业务异常，错误码是:{}，错误信息是:{}", Arrays.stream(e.getStackTrace()).findFirst().orElse(null),e.getResultCode(), e.getResultMsg());
+    public ResultResponse handlerBusinessException(HttpServletRequest request, GenericException e) {
+        logger.error("{}发生了业务异常，错误码是:{}，错误信息是:{}", Arrays.stream(e.getStackTrace()).findFirst().orElse(null), e.getResultCode(), e.getResultMsg());
         return ResultResponse.error(e);
     }
 

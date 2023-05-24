@@ -5,7 +5,7 @@ import com.yj.lowcodeplatform.system.entity.dto.UserDTO;
 import com.yj.lowcodeplatform.system.entity.vo.UserQueryVO;
 import com.yj.lowcodeplatform.system.entity.vo.UserUpdateVO;
 import com.yj.lowcodeplatform.system.entity.vo.UserVO;
-import com.yj.lowcodeplatform.system.exception.BusinessException;
+import com.yj.lowcodeplatform.system.exception.GenericException;
 import com.yj.lowcodeplatform.system.exception.ResultCodeInfoEnum;
 import com.yj.lowcodeplatform.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResultResponse<String> login(@RequestBody UserDTO userDTO) {
-        throw new BusinessException(ResultCodeInfoEnum.INTERNAL_SERVER_ERROR);
+        throw new GenericException(ResultCodeInfoEnum.INTERNAL_SERVER_ERROR);
 //        UserVO userVo = userService.login(userDTO);
 //        userDTO.setId(4L);
 //        String jwtToken = JwtUtils.generateToken(userDTO.getId().toString(), userDTO.getUsername());
