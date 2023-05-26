@@ -5,14 +5,11 @@ import com.yj.lowcodeplatform.system.entity.User;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author YuJin
- * @since 2023/5/21 16:01
- * @version 1.0.0
- * @apiNote
- */
+* @author YuJin
+* @since 2023/5/21 16:01
+* @version 1.0.0
+* @apiNote
+*/
 @Repository
-public interface UserDao extends BaseDao<User> {
-
-    User findByUsername(String username);
-
+public interface ${className}Dao extends BaseDao<${className}> {
 }
